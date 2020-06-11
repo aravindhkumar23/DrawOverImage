@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:draw_over_image/image_preview.dart';
 import 'package:draw_over_image/utils/painter_plugin.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ExamplePage extends StatefulWidget {
+class PainterView extends StatefulWidget {
   @override
-  _ExamplePageState createState() => new _ExamplePageState();
+  _PainterViewState createState() => new _PainterViewState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
+class _PainterViewState extends State<PainterView> {
   bool _finished;
   PainterController _controller;
   ui.Image bgImage;
@@ -37,6 +38,7 @@ class _ExamplePageState extends State<ExamplePage> {
     ui.decodeImageFromList(img, (ui.Image img) {
       setState(() {
         bgImage = img;
+        _finished = false;
       });
       _controller = _newController();
       setState(() {
@@ -49,7 +51,7 @@ class _ExamplePageState extends State<ExamplePage> {
   PainterController _newController() {
     PainterController controller = new PainterController();
     controller.thickness = 5.0;
-    controller.backgroundColor = Colors.green;
+    controller.backgroundColor = Colors.white;
     controller.bgImage = bgImage;
     return controller;
   }
@@ -116,11 +118,14 @@ class _ExamplePageState extends State<ExamplePage> {
     setState(() {
       _finished = true;
     });
-    final Uint8List bytes = await picture.toPNG();
-    Navigator.of(context).push(new MaterialPageRoute(
+    final Uint8List byte = await picture.toPNG();
+    Navigator.of(context).push(
+      new MaterialPageRoute(
         builder: (BuildContext context) => ImagePreview(
-              pngBytes: bytes,
-            )));
+          pngBytes: byte,
+        ),
+      ),
+    );
   }
 
   void _chooseImage() async {
@@ -128,8 +133,12 @@ class _ExamplePageState extends State<ExamplePage> {
       final PickedFile pickedFile = await ImagePicker().getImage(
         source: ImageSource.camera,
       );
-      final List<int> byte = await pickedFile.readAsBytes();
-      loadImage(byte);
+      if (pickedFile != null) {
+        setState(() {
+          isImageloaded = false;
+        });
+        loadImage(await pickedFile.readAsBytes());
+      }
     } catch (e) {
       print('pick image error ${e.toString()}');
     }
@@ -174,7 +183,7 @@ class DrawBar extends StatelessWidget {
                   }));
         }),
         new ColorPickerButton(_controller, false),
-        new ColorPickerButton(_controller, true),
+//        new ColorPickerButton(_controller, true),
       ],
     );
   }
