@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:draw_over_image/painter_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -12,7 +13,7 @@ const directoryName = 'Signature';
 
 void main() {
   runApp(MaterialApp(
-    home: ImageEditor(),
+    home: ExamplePage(),
     debugShowCheckedModeBanner: false,
   ));
 }
@@ -35,15 +36,11 @@ class ImageEditorState extends State<ImageEditor> {
       persistentFooterButtons: <Widget>[
         IconButton(
           icon: Icon(Icons.slideshow),
-          onPressed: () {
-
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: Icon(Icons.color_lens),
-          onPressed: () {
-
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: Icon(Icons.clear),

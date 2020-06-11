@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:draw_over_image/image_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'dart:async';
@@ -109,6 +110,12 @@ class _DrawState extends State<Draw> {
 //                      setState(() {
 //                      image = renderedImage;
 //                      });
+//                            var pngBytes =
+//                            await renderedImage.toByteData(format: ui.ImageByteFormat.png);
+//                            Navigator.of(context).push(MaterialPageRoute(
+//                                builder: (BuildContext context) => ImagePreview(
+//                                  pngBytes: pngBytes,
+//                                )));
                       }),
                     ],
                   ),
